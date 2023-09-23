@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
         userInput.value = '';
 
         // Make a POST request to the FastAPI endpoint (/chat)
-        fetch('http://localhost:8000/chat', {
+        fetch('/chat', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -33,13 +33,10 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Error:', error);
         });
     });
-    function appendMessage(sender, message) {
-        const messageContainer = document.createElement('div');
-        messageContainer.className = 'message';
-        messageContainer.innerHTML = `<strong>${sender}:</strong> ${message}`;
-        chatBody.appendChild(messageContainer);
 
-        // Scroll to the bottom to show the latest message
-        chatBody.scrollTop = chatBody.scrollHeight;
+    function appendMessage(sender, message) {
+        const messageElement = document.createElement('div');
+        messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
+        chatBody.appendChild(messageElement);
     }
 });

@@ -1,7 +1,8 @@
-# app.py - FastAPI route handler with chatbot logic
+# app.py
 
 from fastapi import FastAPI
 from pydantic import BaseModel
+from chatbot import chat_with_bot
 
 app = FastAPI()
 
@@ -14,15 +15,7 @@ def chat(user_input: UserInput):
     user_message = user_input.user_message
     chat_history = user_input.chat_history
 
-    # Replace this example logic with your chatbot implementation
-    bot_reply = generate_bot_response(user_message)
-
-    # Update the chat history with the user's message and bot's reply
-    updated_chat_history = chat_history + [f'User: {user_message}', f'Bot: {bot_reply}']
+    # Call your chatbot logic
+    bot_reply, updated_chat_history = chat_with_bot(user_message, chat_history)
 
     return {"bot_reply": bot_reply, "chat_history": updated_chat_history}
-
-def generate_bot_response(user_message):
-    # Example: A simple chatbot that echoes the user's message
-    return f"You said: {user_message}"
-
