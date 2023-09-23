@@ -1,4 +1,5 @@
 // script.js
+
 document.addEventListener('DOMContentLoaded', function () {
     const chatBody = document.getElementById('chat-body');
     const userInput = document.getElementById('user-input');
@@ -11,16 +12,27 @@ document.addEventListener('DOMContentLoaded', function () {
         appendMessage('You', userMessage);
         userInput.value = '';
 
-        // Call your chatbot function here and append its response
-        // Example: chatWithBot(userMessage);
-
-        // For this example, we'll simulate a response
-        const botMessage = 'This is a simulated response from the bot.';
-        setTimeout(() => {
-            appendMessage('Virtual Therapist', botMessage);
-        }, 500);
+        // Make a POST request to the FastAPI endpoint (/chat)
+        fetch('http://localhost:8000/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                user_message: userMessage,
+                chat_history: []  // Add your chat history logic here
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Handle the response from the server
+            const botReply = data.bot_reply;
+            appendMessage('Virtual Therapist', botReply);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     });
-
     function appendMessage(sender, message) {
         const messageContainer = document.createElement('div');
         messageContainer.className = 'message';
